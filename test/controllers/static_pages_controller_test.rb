@@ -6,6 +6,11 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     @base_title = "RoR Tutorial Sample App"
   end
 
+  test "shoudl get root" do
+    get root_url
+    assert_response :success
+  end
+
   test "should get home" do
     get static_pages_home_url
     assert_response :success
