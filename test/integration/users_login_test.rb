@@ -11,7 +11,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_template 'sessions/new'
 
     assert_select 'form'
-    assert_select 'label', count: 2
+    assert_select 'label', count: 3
     assert_select 'input#session_email'
     assert_select 'input#session_password'
     assert_select 'input.btn'
@@ -26,7 +26,7 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
 
   test "login with valid information followed by logout" do
     get login_path
-    post login_path, params: { session: { email: "s@t.c", password: "111111" } }
+    post login_path, params: { session: { email: @user.email, password: "111111" } }
     assert is_logged_in?
 
     assert_redirected_to @user
@@ -39,9 +39,29 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     delete logout_path
     assert_not is_logged_in?
     assert_redirected_to home_url
+    # simulate a user clicking log-out in a second browser
+    delete logout_path
     follow_redirect!
     assert_select "a[href=?]", login_path
     assert_select "a[href=?]", logout_path, count: 0
     assert_select "a[href=?]", user_path(@user), count: 0
+  end
+
+  test "authenticated? should return false for a user with nil remember digest" do
+    assert_not @user.authenticated?("")
+  end
+
+  test "login with remembering" do
+    log_in_as(@user, remember_me: "1")
+    assert_equal cookies[:remember_token], assigns(:user).remember_token
+    # assert_not_empty cookies[:remember_token]
+  end
+
+  test "login without remembering" do
+    # log in to set the cookie
+    log_in_as(@user, remember_me: "1")
+    # log in again and verifiy that the cookie is deleted
+    log_in_as(@user, remember_me: "0")
+    assert_empty cookies[:remember_token]
   end
 end
