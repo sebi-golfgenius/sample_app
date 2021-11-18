@@ -4,3 +4,15 @@ sebi:
   name: sebi
   email: s@t.c
   password_digest: <%= User.digest('111111') %>
+
+archer:
+  name: Sterling archer
+  email: duchess@example.gov
+  password_digest: <%= User.digest('111111') %>
+
+<% 30.times do |n| %>
+user_<%= n %>:
+  name: <@= "User #{n}" %>
+  email: <%= "u#{n}@t.c" %>
+  password_digest: <%= User.digest('111111') %>
+<% end %>
