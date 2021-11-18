@@ -4,6 +4,7 @@ sebi:
   name: sebi
   email: s@t.c
   password_digest: <%= User.digest('111111') %>
+  admin: true
 
 archer:
   name: Sterling archer
