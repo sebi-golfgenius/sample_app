@@ -54,4 +54,6 @@ class UsersIndexTest < ActionDispatch::IntegrationTest
     get user_path(@nonci)
     assert_redirected_to root_url
   end
+
+  
 end
