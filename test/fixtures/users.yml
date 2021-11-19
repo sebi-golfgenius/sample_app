@@ -5,15 +5,28 @@ sebi:
   email: s@t.c
   password_digest: <%= User.digest('111111') %>
   admin: true
+  activated: true
+  activated_at: <%= Time.zone.now %>
+
+nonci:
+  name: Nonci Anctivasescu
+  email: not@yet.activated
+  password_digest: <%= User.digest('111111') %>
+  activated: false
+  # activated_at: <%= Time.zone.now %>
 
 archer:
   name: Sterling archer
   email: duchess@example.gov
   password_digest: <%= User.digest('111111') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 
 <% 30.times do |n| %>
 user_<%= n %>:
   name: <@= "User #{n}" %>
   email: <%= "u#{n}@t.c" %>
   password_digest: <%= User.digest('111111') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 <% end %>
