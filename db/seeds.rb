@@ -42,5 +42,6 @@ users = User.order(:created_at).take(6)
   content = Faker::ChuckNorris.fact
   if content.length > 140
     content = content[0..139]
+  end
   users.each { |user| user.microposts.create!(content: content) }
 end
