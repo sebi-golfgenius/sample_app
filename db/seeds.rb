@@ -15,6 +15,14 @@ User.create!(name: "Example User",
             activated: true,
             activated_at: Time.zone.now)
 
+User.create!(name: "Sebi",
+            email: "s@t.c",
+            password: "111111",
+            password_confirmation: '111111',
+            admin: true,
+            activated: true,
+            activated_at: Time.zone.now)
+
 # Generate a bunch of users
 99.times do |n|
   name = Faker::Name.name
@@ -26,4 +34,11 @@ User.create!(name: "Example User",
               password_confirmation: password,
               activated: true,
               activated_at: Time.zone.now)
+end
+
+# Generate microposts for a subset of users
+users = User.order(:createad_at).take(6)
+50.times do
+  content = Faker::ChuckNorris.fact
+  users.each { |user| user.microposts.create!(content: content) }
 end

@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  has_many :microposts, dependent: :destroy
+
   attr_accessor :remember_token, :activation_token, :reset_token
   before_save :downcase_email
   before_create :create_activation_digest
@@ -68,6 +70,11 @@ class User < ApplicationRecord
   # returns true if the password reset has expired
   def password_reset_expired?
     reset_send_at < 2.hours.ago
+  end
+
+  # Defines a proto-feed
+  def feed
+    Micropost.where("user_id=?", id)
   end
 
   private

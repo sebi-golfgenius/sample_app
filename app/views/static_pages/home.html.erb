@@ -1,10 +1,6 @@
 
-<div class="center jumbotron">
-  <h1>StaticPages#home</h1>
-
-  <h2> This is the home page </h2>
-  <%= link_to "Sign up now!", signup_path, class: "btn btn-lg btn-primary"%>
-</div>
-
-<%= link_to image_tag("rails.png", alt: "Rails logo", width: 200), "https://rubyonrails.org/" %>
-<%#= image_tag("cat.png", alt: "Cat Image", width: 200) %>
+<% if logged_in? %>
+  <%= render 'static_pages/micropost_form' %>
+<% else %>
+  <%= render 'static_pages/default_page' %>
+<% end %>
