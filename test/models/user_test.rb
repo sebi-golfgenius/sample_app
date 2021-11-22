@@ -71,4 +71,34 @@ class UserTest < ActiveSupport::TestCase
     @user.password = @user.password_confirmation = "a" * 5
     assert_not @user.valid?
   end
+
+  test "should follow and unfollow a user" do
+    sebi = users(:sebi)
+    archer = users(:archer)
+    assert_not sebi.following?(archer)
+    sebi.follow(archer)
+    assert sebi.following?(archer)
+    assert archer.followers.include?(sebi)
+    sebi.unfollow(archer)
+    assert_not sebi.following?(archer)
+    assert_not archer.followers.include?(sebi)
+  end
+
+  test "feed should have the right posts" do
+    sebi = users(:sebi)
+    archer = users(:archer)
+    lana = users(:lana)
+    # Posts from unfollwed user (sebi follows lana)
+    lana.microposts.each do |post_following|
+      assert sebi.feed.include?(post_following)
+    end
+    # Posts from self
+    sebi.microposts.each do |post_self|
+      assert sebi.feed.include?(post_self)
+    end
+    # Posts from unfollwed user
+    archer.microposts.each do |post_unfollowed|
+      assert_not sebi.feed.include?(post_unfollowed)
+    end
+  end
 end
